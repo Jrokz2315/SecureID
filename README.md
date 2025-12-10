@@ -19,8 +19,9 @@ Prerequisites
 3. Azure App Service (to host the application). - https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade
 4. Microsoft Entra Verified ID service enabled (optional, but required for the Digital ID flow). - https://entra.microsoft.com/
 
-Step 1: Azure App Registration. You need an App Registration to allow the app to read user data and perform resets. 
-A. Go to Entra ID > App registrations > New registration. Name: SecureID (Or whatever youwant), account types: Accounts in this organizational directory only. Redirect URI (Web): https://<your-app-name>.azurewebsites.net/.auth/login/aad/callback (You can enter this later if the app is not yet created). 
+Step 1: Create and Enterprise App with a name to your liking. Once created I like to go to Properties, set "Assignment Required = Yes and Visible to Users = No. Next under Users and Groups, create a new security group for the users you want to be able to access the app.
+Next, Go to Azure App Registration.
+A. Look for the APP you previously created,  Name: SecureID (Or whatever you set it to)
 B. Certificates & secrets: Create a new Client Secret. Copy the Value immediately (you will need it later). 
 C. API Permissions: Add the following Microsoft Graph permissions (Application type):
   1. User.Read (Read user profiles/phones)
@@ -52,7 +53,7 @@ Step 3: Secure with SSO (Authentication). This app must be protected so only IT 
 A. In your App Service, go to Settings > Authentication. Click Add identity provider > Microsoft. Select the App Registration you created in Step 1. 
 B. Restrict access: Set to "Allow unauthenticated access". Why? The app handles authentication internally (server.js) to allow Twilio callbacks (robots) to bypass login while forcing humans (Admins) to sign in.
 
-Step 4: If not done yet. Copy the Web App "Default Domain" - https://<your-app-name>.azurewebsites.net/ and go back to your Registered App and under redirect URI paste https://<your-app-name>.azurewebsites.net/.auth/login/aad/callback and save. 
+Step 4: Copy the Web App "Default Domain" - https://<your-app-name>.azurewebsites.net/ and go back to your Registered App and under redirect URI paste https://<your-app-name>.azurewebsites.net/.auth/login/aad/callback and save. Under settings in the Redirect URI config, ensure the implicit grant and hybrid flows has ID tokens only checked. 
 
 Step 5: Configure Verified ID (Optional) If using the "Digital ID" tab: Ensure you have a Verifiable Credential (like "VerifiedEmployee") published in Entra Verified ID. In the Verified ID settings, ensure your App Service URL is added as a trusted domain (optional but recommended). In simpler terms create a "Credential" in Entra under Verified ID
 
