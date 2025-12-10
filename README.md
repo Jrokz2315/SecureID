@@ -64,6 +64,8 @@ Now under APIs my organization uses: (This is for the Digital ID portion)
 8. VerifiableCredential.Create.PresentRequest
 
 Important: Click "Grant admin consent for <Organization>" after adding them.
+
+D. Go to Azure > Roles and Administrators, look for the "Privileged Authentication Administrator" role and assign the newly created App to this role. It is needed for resetting Passwords and MFA methods. 
 <br><br>
 **Step 2:** Deployment to Azure App Service
 
